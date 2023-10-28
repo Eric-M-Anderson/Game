@@ -28,4 +28,4 @@ class Tile:
         pygame.draw.rect(self.surface, (100, 100, 100), pygame.Rect(self.cx, self.cy, self.size, self.size), 1)
         if self.tile.collidepoint(pygame.mouse.get_pos()):
             pygame.draw.rect(self.surface, (255, 255, 255), pygame.Rect(self.cx, self.cy, self.size, self.size), 3)
-        pygame.display.flip()
+        pygame.display.update()

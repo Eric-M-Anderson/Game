@@ -50,7 +50,6 @@ count = 0
 # Game loop
 # keep game running till running is true
 while running:
-    count += 1
 
     for i in world_map:
         for j in i:
@@ -63,3 +62,5 @@ while running:
         # running bool to false
         if event.type == pygame.QUIT:
             running = False
+
+    count += 1
