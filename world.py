@@ -1,6 +1,10 @@
 import pygame
 
 
+class World:
+    pass
+
+
 class Tile:
     def __init__(self, surface, x, y, size, colour=(0, 0, 255)):
         """
@@ -21,11 +25,22 @@ class Tile:
         self.cx = self.x - half_of_size
         self.cy = self.y - half_of_size
 
-        self.tile = ''
+        self.is_hovering = False
 
-    def draw(self):
-        self.tile = pygame.draw.rect(self.surface, self.colour, pygame.Rect(self.cx, self.cy, self.size, self.size))
+    def init_tile(self):
+        # Draws the tile on the screen
+        pygame.draw.rect(self.surface, self.colour, pygame.Rect(self.cx, self.cy, self.size, self.size))
         pygame.draw.rect(self.surface, (100, 100, 100), pygame.Rect(self.cx, self.cy, self.size, self.size), 1)
-        if self.tile.collidepoint(pygame.mouse.get_pos()):
-            pygame.draw.rect(self.surface, (255, 255, 255), pygame.Rect(self.cx, self.cy, self.size, self.size), 3)
         pygame.display.update()
+
+    def mouse_track(self):
+        if self.cx < pygame.mouse.get_pos()[0] < self.x + self.size / 2 and self.cy < pygame.mouse.get_pos()[1] < self.y + self.size / 2:
+            # Puts a highlight over the tile if the mouse is over it
+            pygame.draw.rect(self.surface, (255, 255, 255), pygame.Rect(self.cx, self.cy, self.size, self.size), 3)
+            self.is_hovering = True
+            pygame.display.update()
+        elif self.is_hovering is True:
+            # Resets the tile to default if the mouse is not over it
+            pygame.draw.rect(self.surface, self.colour, pygame.Rect(self.cx, self.cy, self.size, self.size))
+            pygame.draw.rect(self.surface, (100, 100, 100), pygame.Rect(self.cx, self.cy, self.size, self.size), 1)
+

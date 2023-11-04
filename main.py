@@ -51,9 +51,13 @@ count = 0
 # keep game running till running is true
 while running:
 
+    if count == 0:
+        for i in world_map:
+            for j in i:
+                j.init_tile()
     for i in world_map:
         for j in i:
-            j.draw()
+            j.mouse_track()
     # Check for event if user has pushed
     # any event in queue
     for event in pygame.event.get():
