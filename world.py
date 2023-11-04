@@ -1,8 +1,48 @@
 import pygame
+import random
+import math
 
 
 class World:
-    pass
+    def __init__(self, world_surface, width, height, tile_size):
+        self.world_surface = world_surface
+        self.width = width
+        self.height = height
+        self.tile_size = tile_size
+        self.map = self.init_map()
+        self.init_world()
+
+    @staticmethod
+    def set_tile_type():
+        types = ['water', 'grass', 'grass', 'grass', 'grass', 'grass']
+        tile_type = types[random.randint(0, 5)]
+        if tile_type == 'water':
+            return 48, 159, 219
+        elif tile_type == 'grass':
+            return 16, 122, 44
+
+    def init_map(self):
+        world_list = []
+        max_width = math.floor(self.width / self.tile_size)
+        max_height = math.floor(self.height / self.tile_size)
+        y = self.tile_size / 2
+        for a in range(max_height):
+            row = []
+            x = self.tile_size / 2
+            for b in range(max_width):
+                row.append(Tile(self.world_surface, x, y, self.tile_size, self.set_tile_type()))
+                x += self.tile_size
+            world_list.append(tuple(row))
+            y += self.tile_size
+        return tuple(world_list)
+
+    def init_world(self):
+        for i in self.map:
+            for j in i:
+                j.init_tile()
+
+    def get_world_map(self):
+        return self.map
 
 
 class Tile:
