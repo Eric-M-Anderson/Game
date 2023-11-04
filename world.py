@@ -44,6 +44,9 @@ class World:
     def get_world_map(self):
         return self.map
 
+    def get_tile_size(self):
+        return self.tile_size
+
 
 class Tile:
     def __init__(self, surface, x, y, size, colour=(0, 0, 255)):
@@ -83,4 +86,5 @@ class Tile:
             # Resets the tile to default if the mouse is not over it
             pygame.draw.rect(self.surface, self.colour, pygame.Rect(self.cx, self.cy, self.size, self.size))
             pygame.draw.rect(self.surface, (100, 100, 100), pygame.Rect(self.cx, self.cy, self.size, self.size), 1)
+            self.is_hovering = False
 
