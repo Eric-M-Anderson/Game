@@ -17,9 +17,9 @@ class World:
         types = ['water', 'grass', 'grass', 'grass', 'grass', 'grass']
         tile_type = types[random.randint(0, 5)]
         if tile_type == 'water':
-            return 48, 159, 219
+            return [(48, 159, 219), 'water']
         elif tile_type == 'grass':
-            return 16, 122, 44
+            return [(16, 122, 44), 'grass']
 
     def init_map(self):
         world_list = []
@@ -30,7 +30,8 @@ class World:
             row = []
             x = self.tile_size / 2
             for b in range(max_width):
-                row.append(Tile(self.world_surface, x, y, self.tile_size, self.set_tile_type()))
+                stt = self.set_tile_type()
+                row.append(Tile(self.world_surface, x, y, self.tile_size, stt[1], stt[0]))
                 x += self.tile_size
             world_list.append(tuple(row))
             y += self.tile_size
@@ -49,13 +50,14 @@ class World:
 
 
 class Tile:
-    def __init__(self, surface, x, y, size, colour=(0, 0, 255)):
+    def __init__(self, surface, x, y, size, ttype, colour=(0, 0, 255)):
         """
         :param surface: Is the location the tile is drawn on. Also known as the game window
         :param x: The center x coordinate of the tile (int)
         :param y: The center y coordinate of the tile (int)
         :param size: The length in pixels of one side of the tile (int)
         :param colour: Sets the colour of the tile as a rgb value (tuple of ints)
+        :param ttype: the type of tile
         """
 
         self.surface = surface
@@ -63,6 +65,7 @@ class Tile:
         self.y = y
         self.size = size
         self.colour = colour
+        self.ttype = ttype
 
         half_of_size = self.size / 2
         self.cx = self.x - half_of_size
@@ -87,4 +90,10 @@ class Tile:
             pygame.draw.rect(self.surface, self.colour, pygame.Rect(self.cx, self.cy, self.size, self.size))
             pygame.draw.rect(self.surface, (100, 100, 100), pygame.Rect(self.cx, self.cy, self.size, self.size), 1)
             self.is_hovering = False
+
+    def get_ttype(self):
+        return self.ttype
+
+    def on_click(self):
+        pass
 
