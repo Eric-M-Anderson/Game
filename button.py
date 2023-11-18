@@ -2,39 +2,34 @@ import pygame
 
 
 class Button:
-    def __init__(self, surface, x, y, width, height, colour=(100, 100, 200), h_colour=(200, 200, 200), t_colour=(255, 255, 255), text='Button',
+    def __init__(self, surface, x, y, colour=(100, 100, 200), h_colour=(200, 200, 200), t_colour=(255, 255, 255), ht_colour=(0, 0, 0), text='Button',
                  font_type='Comic Sans MS', font_size=20, command=lambda: print("clicked right now")):
         self.surface = surface
         self.x = x
         self.y = y
-        self.width = width
-        self.height = height
         self.colour = colour
         self.h_colour = h_colour
         self.t_colour = t_colour
-        self.text = text
+        self.ht_colour = ht_colour
+        self.text = f' {text} '
         self.font_type = font_type
         self.font_size = font_size
         self.font = pygame.font.SysFont(self.font_type, self.font_size)
+        self.need_space = self.font.size(self.text)
         self.command = command
         self.pressed = False
 
-        self.cx = self.x - self.width / 2
-        self.cy = self.y - self.height / 2
-
     def update(self):
         if self.is_hovering():
-            pygame.draw.rect(self.surface, self.h_colour, pygame.Rect(self.cx, self.cy, self.width, self.height))
-            pygame.draw.rect(self.surface, self.colour, pygame.Rect(self.cx, self.cy, self.width, self.height), 1)
+            font = self.font.render(self.text, True, self.ht_colour, self.h_colour)
             self.check_if_click()
         else:
-            pygame.draw.rect(self.surface, self.colour, pygame.Rect(self.cx, self.cy, self.width, self.height))
-            pygame.draw.rect(self.surface, self.h_colour, pygame.Rect(self.cx, self.cy, self.width, self.height), 1)
-        self.surface.blit(self.font.render(self.text, False, self.t_colour), (self.x - self.width / 4.5, self.y - self.height / 4))
+            font = self.font.render(self.text, True, self.t_colour, self.colour)
+        self.surface.blit(font, (self.x, self.y))
         pygame.display.update()
 
     def is_hovering(self):
-        if self.cx < pygame.mouse.get_pos()[0] < self.x + self.width / 2 and self.cy < pygame.mouse.get_pos()[1] < self.y + self.height / 2:
+        if self.x < pygame.mouse.get_pos()[0] < (self.x + self.need_space[0]) and self.y < pygame.mouse.get_pos()[1] < (self.y + self.need_space[1]):
             return True
         else:
             return False
@@ -45,6 +40,6 @@ class Button:
                 for event in pygame.event.get():
                     if event.type == pygame.MOUSEBUTTONUP:
                         self.command()
-                self.pressed = True
+                        self.pressed = True
             if pygame.mouse.get_pressed()[0] == 0:
                 self.pressed = False
