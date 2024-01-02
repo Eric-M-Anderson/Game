@@ -3,6 +3,7 @@ import pygame
 import world
 import player
 import button
+import building
 
 # initializing imported module
 pygame.init()
@@ -42,6 +43,9 @@ while running:
         base_location_x2 = 59
         base_location_y2 = 21
         player2 = player.Player(w, 'Blue_Player', (0, 0, 255), base_location_x2, base_location_y2)
+        lf = building.LandFactory(w, surface, 10, 20, 'No_Player')
+
+    lf.update()
 
     # Updates the mouse hovering Graphic
     for i in w.get_world_map():
