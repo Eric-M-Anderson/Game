@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+import building
 
 
 class World:
@@ -14,11 +15,11 @@ class World:
 
     @staticmethod
     def set_tile_type():
-        types = ['water', 'grass', 'grass', 'grass', 'grass', 'grass']
-        tile_type = types[random.randint(0, 5)]
-        if tile_type == 'water':
+        max_number = 99
+        rand_num = random.randint(0, max_number)
+        if rand_num < 5:
             return [(48, 159, 219), 'water']
-        elif tile_type == 'grass':
+        else:
             return [(16, 122, 44), 'grass']
 
     def init_map(self):
@@ -31,7 +32,13 @@ class World:
             x = self.tile_size / 2
             for b in range(max_width):
                 stt = self.set_tile_type()
-                row.append(Tile(self.world_surface, x, y, self.tile_size, stt[1], stt[0]))
+                max_number = 99
+                rand_num = random.randint(0, max_number)
+                if rand_num < 2:
+                    lf = building.LandFactory(self, self.world_surface, x, y, 'No_Player', 10, True)
+                    row.append(Tile(self.world_surface, x, y, self.tile_size, stt[1], stt[0], lf))
+                else:
+                    row.append(Tile(self.world_surface, x, y, self.tile_size, stt[1], stt[0]))
                 x += self.tile_size
             world_list.append(tuple(row))
             y += self.tile_size
@@ -50,7 +57,7 @@ class World:
 
 
 class Tile:
-    def __init__(self, surface, x, y, size, ttype, colour=(0, 0, 255)):
+    def __init__(self, surface, x, y, size, ttype, colour=(0, 0, 255), tile_building=None):
         """
         :param surface: Is the location the tile is drawn on. Also known as the game window
         :param x: The center x coordinate of the tile (int)
@@ -72,11 +79,14 @@ class Tile:
         self.cy = self.y - half_of_size
 
         self.is_hovering = False
+        self.tile_building = tile_building
 
     def init_tile(self):
         # Draws the tile on the screen
         pygame.draw.rect(self.surface, self.colour, pygame.Rect(self.cx, self.cy, self.size, self.size))
         pygame.draw.rect(self.surface, (100, 100, 100), pygame.Rect(self.cx, self.cy, self.size, self.size), 1)
+        if self.tile_building is not None:
+            self.tile_building.update()
         pygame.display.update()
 
     def mouse_track(self):
@@ -90,6 +100,11 @@ class Tile:
             pygame.draw.rect(self.surface, self.colour, pygame.Rect(self.cx, self.cy, self.size, self.size))
             pygame.draw.rect(self.surface, (100, 100, 100), pygame.Rect(self.cx, self.cy, self.size, self.size), 1)
             self.is_hovering = False
+        if self.tile_building is not None:
+            self.tile_building.update()
+
+    def get_has_building(self):
+        return self.tile_building
 
     def get_ttype(self):
         return self.ttype

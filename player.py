@@ -12,8 +12,6 @@ class Player:
         self.colour = colour
         self.money = 1000
         self.base_size = 16
-        # self.base_location_x = self.convert_to_pixels(base_location_x - 1)
-        # self.base_location_y = self.convert_to_pixels(base_location_y - 1)
         self.base_location_x = self.u.center_square_tile_square(w, base_location_x, base_location_y, self.base_size)[0]
         self.base_location_y = self.u.center_square_tile_square(w, base_location_x, base_location_y, self.base_size)[1]
         self.is_turn = False

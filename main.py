@@ -28,6 +28,7 @@ while running:
     if count == 0:
         # Draws the world for the first time
         w = world.World(surface, 1900, 750, 30)
+
         """while True:
             base_location_x = int(input(f"Where do you want your base on the x position: "))
             base_location_y = int(input(f"Where do you want your base on the y position: "))
@@ -43,9 +44,9 @@ while running:
         base_location_x2 = 59
         base_location_y2 = 21
         player2 = player.Player(w, 'Blue_Player', (0, 0, 255), base_location_x2, base_location_y2)
-        lf = building.LandFactory(w, surface, 10, 20, 'No_Player')
+        # lf = building.LandFactory(w, surface, 10, 20, 'No_Player')
 
-    lf.update()
+
 
     # Updates the mouse hovering Graphic
     for i in w.get_world_map():
