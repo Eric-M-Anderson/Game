@@ -4,8 +4,8 @@ import utilities
 
 
 class Building(abc.ABC):
-    def __init__(self, w_size, surface, x, y, ownership):
-        self.w_size = w_size
+    def __init__(self, w, surface, x, y, ownership):
+        self.w = w
         self.surface = surface
         self.x = x
         self.y = y

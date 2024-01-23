@@ -4,6 +4,7 @@ import world
 import player
 import button
 import building
+import unit
 
 # initializing imported module
 pygame.init()
@@ -28,7 +29,7 @@ while running:
     if count == 0:
         # Draws the world for the first time
         w = world.World(surface, 1900, 750, 30)
-
+        u = unit.Unit(w, surface, 4, 4, 'Red_Player', 0, 0, 0, 0)
         """while True:
             base_location_x = int(input(f"Where do you want your base on the x position: "))
             base_location_y = int(input(f"Where do you want your base on the y position: "))
@@ -57,9 +58,23 @@ while running:
     player2.spawn_base(surface)
 
     if player1.get_is_turn() is True:
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    u.move_x(-1)
+                if event.key == pygame.K_RIGHT:
+                    u.move_x(1)
+                if event.key == pygame.K_UP:
+                    u.move_y(-1)
+                if event.key == pygame.K_DOWN:
+                    u.move_y(1)
+                u.update()
         player1.turn(surface, player2)
     elif player2.get_is_turn() is True:
         player2.turn(surface, player1)
+
+    u.update()
 
     # Check for event if user has pushed
     # any event in queue
