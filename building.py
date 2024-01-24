@@ -39,7 +39,7 @@ class Base(Building):
         if xy_is_grid is False:
             self.location = self.u.center_square_tile_square(w, x, y, self.size, True)
         else:
-            self.location = self.u.center_square_tile_square(w, x, y, self.size)
+            self.location = (x - (self.size/2), y - (self.size/2))
 
     def set_owner(self, player):
         pass

@@ -5,25 +5,32 @@ pygame.font.init()
 
 
 class Player:
-    def __init__(self, w, name, colour, base_location_x, base_location_y):
+    def __init__(self, w, surface, name, colour, base_location_x, base_location_y):
         self.u = utilities.Utilities()
-        self.world = w
+        self.w = w
+        self.surface = surface
         self.name = name
         self.colour = colour
         self.money = 1000
         self.base_size = 16
-        self.base_location_x = self.u.center_square_tile_square(w, base_location_x, base_location_y, self.base_size)[0]
-        self.base_location_y = self.u.center_square_tile_square(w, base_location_x, base_location_y, self.base_size)[1]
+        self.base_location_x = base_location_x - 1  # self.u.center_square_tile_square(w, base_location_x, base_location_y, self.base_size)[0]
+        self.base_location_y = base_location_y - 1  # self.u.center_square_tile_square(w, base_location_x, base_location_y, self.base_size)[1]
         self.is_turn = False
         self.my_font = pygame.font.SysFont('Comic Sans MS', 50)
         self.total_turns = 0
+        self.spawn_base()
 
-    def spawn_base(self, surface):
-        pygame.draw.rect(surface, self.colour, pygame.Rect(self.base_location_x, self.base_location_y, self.base_size, self.base_size))
-        pygame.display.update()
+    def spawn_base(self):
+        tile = self.w.get_world_map()[self.base_location_y][self.base_location_x]
+        tile.set_has_building(True)
+        tile.set_btype('Base')
+        tile.set_building_owner(self.name)
+        tile.create_building()
+        # pygame.draw.rect(self.surface, self.colour, pygame.Rect(self.base_location_x, self.base_location_y, self.base_size, self.base_size))
+        # pygame.display.update()
 
     def convert_to_pixels(self, tile_number):
-        return (tile_number * self.world.get_tile_size()) + (self.world.get_tile_size() / 2) - self.base_size/2
+        return (tile_number * self.w.get_tile_size()) + (self.w.get_tile_size() / 2) - self.base_size/2
 
     def get_money(self):
         return self.money

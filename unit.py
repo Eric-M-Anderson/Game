@@ -23,10 +23,10 @@ class Unit(abc.ABC):
 
     def update(self):
         if self.ownership == 'Red_Player':
-            self.w.get_world_map()[self.prev_y][self.prev_x].init_tile()
+            self.w.get_world_map()[self.prev_y][self.prev_x].update()
             pygame.draw.circle(self.surface, (255, 0, 0), (self.x, self.y), 5)
         elif self.ownership == 'Blue_Player':
-            self.w.get_world_map()[self.prev_y][self.prev_x].init_tile()
+            self.w.get_world_map()[self.prev_y][self.prev_x].update()
             pygame.draw.circle(self.surface, (0, 0, 255), (self.x, self.y), 5)
 
     def move_x(self, tiles):
